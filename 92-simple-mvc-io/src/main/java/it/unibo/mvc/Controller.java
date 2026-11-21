@@ -6,17 +6,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOError;
 import java.io.IOException;
-import java.io.OutputStream; 
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets; 
 
 /**
  * Application controller. Performs the I/O.
  */
 public class Controller {
     private File currentFile;
-    public static final String SEP = File.separator;
-    static String defaultName=System.getProperty (" user.home ") + SEP + "output.txt";
+    public static final String SEP = System.getProperty("file.separator");
+    static String defaultName=System.getProperty("user.home") + SEP + "output.txt";
+    private File dest = new File(System.getProperty("user.home") + File.separator + "output.txt");
 
-    public Controller(File currentFile) {
+    public Controller() {
         this.currentFile = new File(defaultName);
     }
 
@@ -60,4 +63,44 @@ public class Controller {
                 dstream.writeUTF(string);
             }
     }
+
+    /**
+     * Saves some text on the designed file.
+     *
+     * @param text
+     *            the text to save
+     * @throws IOException
+     *             if the writing fails
+     */
+    public void save(final String text) throws IOException {
+        try (PrintStream out = new PrintStream(this.getCurrentFile(), StandardCharsets.UTF_8)) {
+            out.println(text);
+        }
+    }
+
+    /**
+     * Sets a new destination file.
+     *
+     * @param file
+     *            the file where to write
+     */
+    public void setDestination(final File file) {
+        final File parent = file.getParentFile();
+        if (parent.exists()) {
+            dest = file;
+        } else {
+            throw new IllegalArgumentException("Cannot save in a non-existing folder.");
+        }
+    }
+
+    /**
+     * Sets a new destination file.
+     *
+     * @param file
+     *            the file where to write
+     */
+    public void setDestination(final String file) {
+        setDestination(new File(file));
+    }
+
 }
