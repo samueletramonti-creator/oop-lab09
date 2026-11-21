@@ -4,7 +4,6 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -16,8 +15,8 @@ import java.nio.charset.StandardCharsets;
 public class Controller {
     private File currentFile;
     public static final String SEP = System.getProperty("file.separator");
-    static String defaultName=System.getProperty("user.home") + SEP + "output.txt";
-    private File dest = new File(System.getProperty("user.home") + File.separator + "output.txt");
+    static String defaultName = System.getProperty("user.home") + SEP + "output.txt";
+    File dest = new File(System.getProperty("user.home") + File.separator + "output.txt");
 
     public Controller() {
         this.currentFile = new File(defaultName);
